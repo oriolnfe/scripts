@@ -1,7 +1,7 @@
 import sys
 from smb.SMBConnection import SMBConnection
 
-print ("Usage:   python smb_enumerator 'username' 'password' 'system' 'domain'")
+print ("### Usage:  python smb_enumerator 'username' 'password' 'system' 'domain'")
 
 conn = SMBConnection(sys.argv[1],
     sys.argv[2],
