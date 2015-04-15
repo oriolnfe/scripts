@@ -13,7 +13,20 @@ conn = SMBConnection(sys.argv[1],
     is_direct_tcp=True)
 
 connected = conn.connect(sys.argv[3],445)
-Response = conn.listShares(timeout=30)
 
-for i in range(len(Response)):
-    print("Share[",i,"] =", Response[i].name)
+try:
+    Response = conn.listShares(timeout=30)
+    for i in range(len(Response)):
+        print("Share[",i,"] =", Response[i].name)
+                
+        try:
+           Response2 = conn.listPath(Response[i].name,'/',timeout=30)
+           for i in range(len(Response2)):
+                print("File[",i,"] =", Response2[i].filename)
+        except:
+            print('### can not access the resource')
+
+except:
+    print('### can not list shares')
+
+
