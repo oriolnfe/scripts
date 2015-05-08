@@ -29,32 +29,32 @@ def main(argv):
             domain = arg
 
     with open(filename) as f:
-        for line in f:
+        for system_name in f:
             try:
-                print('### Analyzing system: ' + line)
+                print('### Analyzing system: ' + system_name)
                 # parameterize an smb connection with a system
                 conn = SMBConnection(username,
                     password,
                     'enumerator',
-                    line,
+                    system_name,
                     domain,
                     use_ntlm_v2=True,
                     sign_options=SMBConnection.SIGN_WHEN_SUPPORTED,
                     is_direct_tcp=True)
 
                 # establish the actual connection
-                connected = conn.connect(sys.argv[3],445)
+                connected = conn.connect(system_name,445)
 
                 try:
                     Response = conn.listShares(timeout=30)  # obtain a list of shares
-                    print('Shares on: ' + sys.argv[3])
+                    print('Shares on: ' + system_name)
                     for i in range(len(Response)):  # iterate through the list of shares
                         print("  Share[",i,"] =", Response[i].name)
                                 
                         try:
                             # list the files on each share (recursivity?)
                             Response2 = conn.listPath(Response[i].name,'/',timeout=30)
-                            print('    Files on: ' + sys.argv[3] + '/' + "  Share[",i,"] =",
+                            print('    Files on: ' + system_name + '/' + "  Share[",i,"] =",
                                    Response[i].name)
                             for i in range(len(Response2)):
                                 print("    File[",i,"] =", Response2[i].filename)
