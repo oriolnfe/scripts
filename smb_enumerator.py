@@ -1,43 +1,36 @@
 import sys
-import getopt
+from optparse import OptionParser
 from smb.SMBConnection import SMBConnection
 
 
-
-def usage():
-    print ("### Usage:  python smb_enumerator -u 'username' -p 'password' -f 'ip/systems file' -d 'domain'")
-
 def main(argv):
-    try:
-        opts, args = getopt.getopt(argv, "hu:p:f:d:", ["help","user=","password=","file=","domain="])
-    
-    except getopt.GetoptError:
-        usage()
-        sys.exit(2)
 
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            usage()                     
-            sys.exit()
-        elif opt in ("-u", "--user"):
-            username = arg
-        elif opt in ("-p", "--password"):
-            password = arg
-        elif opt in ("-f", "--file"):
-            filename = arg
-        elif opt in ("-d", "--domain"):
-            domain = arg
+    parser = OptionParser()
 
-    with open(filename) as f:
+    parser.add_option("-u", "--username", 
+            help="Username that will be used for authentication")
+
+    parser.add_option("-p", "--password", 
+            help="Password that will be used for authentication")
+
+    parser.add_option("-f", "--file", dest="filename",
+                              help="Read systems list from file")
+  
+    parser.add_option("-d", "--domain", 
+            help="Domain name that will be used for authentication")
+
+    (options, args) = parser.parse_args()
+
+    with open(options.filename) as f:
         for system_name in f:
             try:
                 print('### Analyzing system: ' + system_name)
                 # parameterize an smb connection with a system
-                conn = SMBConnection(username,
-                    password,
+                conn = SMBConnection(options.username,
+                    options.password,
                     'enumerator',
                     system_name,
-                    domain,
+                    options.domain,
                     use_ntlm_v2=True,
                     sign_options=SMBConnection.SIGN_WHEN_SUPPORTED,
                     is_direct_tcp=True)
