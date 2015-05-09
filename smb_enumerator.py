@@ -4,9 +4,7 @@ from smb.SMBConnection import SMBConnection
 
 
 def main(argv):
-
     parser = OptionParser()
-
     parser.add_option("-u", "--username", 
             help="Username that will be used for authentication")
     parser.add_option("-p", "--password", 
