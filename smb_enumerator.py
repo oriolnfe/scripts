@@ -9,16 +9,12 @@ def main(argv):
 
     parser.add_option("-u", "--username", 
             help="Username that will be used for authentication")
-
     parser.add_option("-p", "--password", 
             help="Password that will be used for authentication")
-
     parser.add_option("-f", "--file", dest="filename",
                               help="Read systems list from file")
-  
     parser.add_option("-d", "--domain", 
             help="Domain name that will be used for authentication")
-
     (options, args) = parser.parse_args()
 
     with open(options.filename) as f:
